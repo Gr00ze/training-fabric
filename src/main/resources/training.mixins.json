@@ -1,0 +1,11 @@
+{
+	"required": true,
+	"package": "com.gr00ze.training.mixin",
+	"compatibilityLevel": "JAVA_21",
+	"mixins": [
+		"ExampleMixin"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	}
+}

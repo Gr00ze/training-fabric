@@ -1,0 +1,11 @@
+{
+	"required": true,
+	"package": "com.gr00ze.training.mixin.client",
+	"compatibilityLevel": "JAVA_21",
+	"client": [
+		"ExampleClientMixin"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	}
+}
