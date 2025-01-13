@@ -10,10 +10,12 @@ import net.minecraft.text.Text;
 import static com.gr00ze.training.util.RegisterFunctions.registerItemGroup;
 
 public class TrainingItemGroup {
+
+    public static final String GROUP_ID = "group.training";// TODO Try display name and registry key different
     public static final ItemGroup TRAINING_ITEM_GROUP = FabricItemGroup.builder()
-            .displayName(Text.translatable("training.item.group"))
+            .displayName(Text.translatable(GROUP_ID))
             .build();
-    public static final RegistryKey<ItemGroup> TRAINING_ITEM_GROUP_KEY = registerItemGroup("training.item.group",TRAINING_ITEM_GROUP);
+    public static final RegistryKey<ItemGroup> TRAINING_ITEM_GROUP_KEY = registerItemGroup(GROUP_ID,TRAINING_ITEM_GROUP);
 
     static void addItems(FabricItemGroupEntries itemGroup){
         itemGroup.add(ItemList.TRAINING_ITEM);
