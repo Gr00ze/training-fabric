@@ -10,7 +10,7 @@ import static com.gr00ze.training.util.RegisterFunctions.registerBlock;
 public class BlockList {
 
     public static final
-    Block CAOS_BLOCK = registerBlock(AbstractBlock.Settings.create(), Identifier.of(MOD_ID, "caos_block"));
+    Block TRAINING_BLOCK = registerBlock(AbstractBlock.Settings.create(), Identifier.of(MOD_ID, "training_block"));
 
 
 
