@@ -13,15 +13,27 @@ public class DummyAIEntity extends DummyMobEntity{
 
     @Override
     protected void initGoals() {
-        this.goalSelector.add(0, new DummyGoal());
+        this.goalSelector.add(0, new DummyGoal(this));
     }
 
     static class DummyGoal extends Goal {
+        public DummyAIEntity dummyAIEntity;
 
+        public DummyGoal(DummyAIEntity dummyAIEntity) {
+            this.dummyAIEntity = dummyAIEntity;
+        }
 
         @Override
         public boolean canStart() {
-            return false;
+            return !dummyAIEntity.jumping;
+        }
+
+
+        @Override
+        public void tick() {
+            dummyAIEntity.jump();
+            super.tick();
+
         }
     }
 }
