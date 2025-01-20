@@ -7,5 +7,9 @@ public class TrainingCustomItem extends Item {
         super(settings);
     }
 
+    public static Item.Settings getItemSetting(){
+        return new Settings();
+    }
+
 
 }
