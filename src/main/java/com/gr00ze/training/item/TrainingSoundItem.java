@@ -18,11 +18,19 @@ public class TrainingSoundItem extends TrainingCustomItem{
         if(entity instanceof DummySoundEntity soundEntity){
                 soundEntity.playSound(SoundList.TRAINING_SOUND);
 
-            return ActionResult.CONSUME;
+            return ActionResult.SUCCESS;
+
         }else{
             return ActionResult.PASS;
 
         }
+
+        /*
+         * SUCCESS = Executed, go next;
+         * CONSUME = Executed, stop;
+         * PASS = Not Executed, go next;
+         * FAIL = Not Executed, stop
+         * */
 
     }
 }
