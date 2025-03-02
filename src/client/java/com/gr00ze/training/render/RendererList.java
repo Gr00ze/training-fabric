@@ -7,6 +7,12 @@ import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import static com.gr00ze.training.render.DummyRenderer.DUMMY_LAYER;
 
 public class RendererList {
+    public static String ENTITY_TEXTURE_PATH = "textures/entity/";
+
+    public static String getPath(String texture){
+        return ENTITY_TEXTURE_PATH + texture;
+
+    }
 
     public static void initialize(){
 
@@ -20,5 +26,8 @@ public class RendererList {
 
 
     }
+
+
+
 
 }

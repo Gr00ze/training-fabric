@@ -1,7 +1,6 @@
 package com.gr00ze.training.entity;
 
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.SpawnGroup;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.mob.PathAwareEntity;
 import net.minecraft.world.World;
@@ -16,9 +15,7 @@ public class DummyMobEntity extends PathAwareEntity {
         return createMobAttributes();
     }
 
-    public static EntityType.Builder<? extends PathAwareEntity>  getBuilder(){
-        return EntityType.Builder.create(DummyMobEntity::new, SpawnGroup.CREATURE);
-    }
+
 
     @Override
     public void tick() {

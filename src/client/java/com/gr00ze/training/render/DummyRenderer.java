@@ -9,7 +9,7 @@ import net.minecraft.util.Identifier;
 import static com.gr00ze.training.Training.MOD_ID;
 
 public class DummyRenderer<E extends MobEntity> extends MobEntityRenderer<E, LivingEntityRenderState, DummyModel> {
-    private static final Identifier TEXTURE = Identifier.of(MOD_ID, "dummy");
+    private static final Identifier TEXTURE = Identifier.of(MOD_ID, RendererList.getPath("dummy.png"));
     public  static final EntityModelLayer DUMMY_LAYER = new EntityModelLayer(Identifier.of(MOD_ID, "dummy_layer"),"main");;
     private static final float SHADOW_SIZE = 0F;
 
