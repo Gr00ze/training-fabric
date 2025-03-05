@@ -1,19 +1,14 @@
 package com.gr00ze.training.util;
 
-import com.gr00ze.training.entity.DummyMobEntity;
-import com.gr00ze.training.item.TrainingCustomItem;
-import com.gr00ze.training.item.TrainingItemGroup;
-import com.gr00ze.training.item.TrainingSoundItem;
+import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
+import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.SpawnGroup;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
-import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.mob.MobEntity;
-import net.minecraft.entity.mob.PathAwareEntity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
@@ -22,13 +17,8 @@ import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.sound.SoundEvent;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
-import net.minecraft.world.World;
 
-
-import java.util.function.Supplier;
 
 import static com.gr00ze.training.Training.MOD_ID;
 
@@ -39,12 +29,36 @@ public class RegisterFunctions {
         return Identifier.of(MOD_ID, objectId);
     }
     //BLOCK
-    public static Block registerBlock(AbstractBlock.Settings settings, Identifier id){
+    //WRONG
+
+    public static Block registerBlock(String blockId, AbstractBlock.Settings settings){
+        Identifier id = id(blockId);
         RegistryKey<Block> key = RegistryKey.of(RegistryKeys.BLOCK, id);
         settings.registryKey(key);
         Block block = new Block(settings);
         return Registry.register(Registries.BLOCK, key, block);
     }
+    //RIGHT
+    @FunctionalInterface
+    public interface BlockFactory<B extends Block> {
+        B create(Block.Settings settings);
+    }
+    public static Block registerBlock(String blockId, BlockFactory<Block> factory , AbstractBlock.Settings settings){
+        Identifier id = id(blockId);
+        RegistryKey<Block> key = RegistryKey.of(RegistryKeys.BLOCK, id);
+        settings.registryKey(key);
+        Block block = factory.create(settings);
+        return Registry.register(Registries.BLOCK, key, block);
+
+
+    }
+
+    public static <B extends BlockEntity> BlockEntityType<B> registerBlockEntity(String blockEntityId, FabricBlockEntityTypeBuilder.Factory<B> factory, Block ...blocks){
+        Identifier id = id(blockEntityId);
+        RegistryKey<BlockEntityType<?>> key = RegistryKey.of(RegistryKeys.BLOCK_ENTITY_TYPE, id);
+        return Registry.register(Registries.BLOCK_ENTITY_TYPE, key, FabricBlockEntityTypeBuilder.create(factory, blocks).build());
+    }
+
     //ITEM
     private static RegistryKey<Item> registerItemKey(Item.Settings settings, Identifier id){
         RegistryKey<Item> key = RegistryKey.of(RegistryKeys.ITEM, id);
@@ -52,9 +66,8 @@ public class RegisterFunctions {
         return key;
     }
 
-    public static Item registerItem(Item.Settings settings, Identifier id, Block block){
-
-        RegistryKey<Item> key = registerItemKey(settings,id);
+    public static Item registerItem(String itemName, Item.Settings settings, Block block){
+        RegistryKey<Item> key = registerItemKey(settings,id(itemName));
         BlockItem item = new BlockItem(block, settings);
         return Registry.register(Registries.ITEM, key, item);
     }
