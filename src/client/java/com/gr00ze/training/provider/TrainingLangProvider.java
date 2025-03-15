@@ -18,12 +18,12 @@ public class TrainingLangProvider extends FabricLanguageProvider {
 
     @Override
     public void generateTranslations(RegistryWrapper.WrapperLookup wrapperLookup, TranslationBuilder translationBuilder) {
-        translationBuilder.add(ItemList.TRAINING_ITEM, "Training item");
-        translationBuilder.add(ItemList.TRAINING_BLOCK_ITEM, "Training block item");
-        translationBuilder.add(ItemList.TRAINING_CUSTOM_ITEM, "Training custom item");
-        translationBuilder.add(ItemList.TRAINING_SOUND_ITEM, "Training sound item");
+        translationBuilder.add(ItemList.SIMPLE_ITEM, "Training item");
+        translationBuilder.add(ItemList.SIMPLE_BLOCK_ITEM, "Training block item");
+        translationBuilder.add(ItemList.CUSTOM_ITEM, "Training custom item");
+        translationBuilder.add(ItemList.CUSTOM_SOUND_ITEM, "Training sound item");
 
-        translationBuilder.add(BlockList.TRAINING_BLOCK, "Training block");
+        translationBuilder.add(BlockList.SIMPLE_BLOCK, "Training block");
 
         translationBuilder.add(EntityTypeList.DUMMY_MOB_ENTITY, "Dummy mob entity");
         translationBuilder.add(EntityTypeList.DUMMY_AI_ENTITY, "Dummy ai entity");

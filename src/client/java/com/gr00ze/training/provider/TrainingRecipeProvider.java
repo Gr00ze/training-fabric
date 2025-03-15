@@ -24,15 +24,15 @@ public class TrainingRecipeProvider extends FabricRecipeProvider {
         return new RecipeGenerator(wrapperLookup, recipeExporter) {
             @Override
             public void generate() {
-                createShapeless(RecipeCategory.MISC, ItemList.TRAINING_ITEM)
+                createShapeless(RecipeCategory.MISC, ItemList.SIMPLE_ITEM)
                         .input(Items.STICK)
                         .criterion("Name of Advncement", conditionsFromItem(Items.AIR))
                         .offerTo(recipeExporter);
 
-                createShaped(RecipeCategory.MISC, ItemList.TRAINING_BLOCK_ITEM)
+                createShaped(RecipeCategory.MISC, ItemList.SIMPLE_BLOCK_ITEM)
                         .pattern("xx")
                         .pattern("xx")
-                        .input('x', ItemList.TRAINING_ITEM)
+                        .input('x', ItemList.SIMPLE_ITEM)
                         .criterion("Name of criterion", conditionsFromItem(Items.AIR))
                         .offerTo(recipeExporter);
 

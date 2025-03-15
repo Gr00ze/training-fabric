@@ -4,9 +4,7 @@ import com.gr00ze.training.BlockList;
 import com.gr00ze.training.item.ItemList;
 import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
-import net.minecraft.client.data.BlockStateModelGenerator;
-import net.minecraft.client.data.ItemModelGenerator;
-import net.minecraft.client.data.Models;
+import net.minecraft.client.data.*;
 
 
 public class TrainingModelProvider extends FabricModelProvider {
@@ -16,7 +14,8 @@ public class TrainingModelProvider extends FabricModelProvider {
 
     @Override
     public void generateBlockStateModels(BlockStateModelGenerator blockStateModelGenerator) {
-        blockStateModelGenerator.registerSimpleCubeAll(BlockList.TRAINING_BLOCK);
+        blockStateModelGenerator.registerSimpleCubeAll(BlockList.SIMPLE_BLOCK);
+        blockStateModelGenerator.registerSimpleState(BlockList.CUSTOM_BLOCK_WITH_ENTITY);
 
 
 
@@ -24,11 +23,9 @@ public class TrainingModelProvider extends FabricModelProvider {
 
     @Override
     public void generateItemModels(ItemModelGenerator itemModelGenerator) {
-        itemModelGenerator.register(ItemList.TRAINING_ITEM, Models.GENERATED);
-        itemModelGenerator.register(ItemList.TRAINING_BLOCK_ITEM, Models.GENERATED);//CUBE NOT WORKING
-        itemModelGenerator.register(ItemList.TRAINING_CUSTOM_ITEM, Models.GENERATED);
-        itemModelGenerator.register(ItemList.TRAINING_SOUND_ITEM, Models.GENERATED);
-
+        itemModelGenerator.register(ItemList.SIMPLE_ITEM, Models.GENERATED);
+        itemModelGenerator.register(ItemList.CUSTOM_ITEM, Models.GENERATED);
+        itemModelGenerator.register(ItemList.CUSTOM_SOUND_ITEM, Models.GENERATED);
     }
 
 
