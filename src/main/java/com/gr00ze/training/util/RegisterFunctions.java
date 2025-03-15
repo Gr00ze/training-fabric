@@ -31,25 +31,43 @@ public class RegisterFunctions {
         return Identifier.of(MOD_ID, objectId);
     }
     //BLOCK
-    //WRONG
 
-    public static Block registerBlock(String blockId, AbstractBlock.Settings settings){
-        Identifier id = id(blockId);
+    private static RegistryKey<Block> registerBlockKey(Identifier id,Block.Settings settings){
         RegistryKey<Block> key = RegistryKey.of(RegistryKeys.BLOCK, id);
         settings.registryKey(key);
-        Block block = new Block(settings);
-        return Registry.register(Registries.BLOCK, key, block);
+        return key;
+    }
+    //WRONG
+    /**
+     * Register a simple block
+     * **/
+
+    public static Block registerBlock(String blockName, AbstractBlock.Settings settings){
+        return registerBlock(blockName, Block::new ,settings);
     }
     //RIGHT
-
-    public static Block registerBlock(String blockId, Function<AbstractBlock.Settings, Block> factory , AbstractBlock.Settings settings){
-        Identifier id = id(blockId);
-        RegistryKey<Block> key = RegistryKey.of(RegistryKeys.BLOCK, id);
-        settings.registryKey(key);
+    /**
+     * Register for simple blocks and custom blocks
+     * @param blockName Unique block name
+     * @param factory is the constructor of your block. Example: {@code Block::new CustomBlock::new}
+     * **/
+    public static Block registerBlock(String blockName, Function<AbstractBlock.Settings, Block> factory , AbstractBlock.Settings settings){
+        RegistryKey<Block> key = registerBlockKey(id(blockName), settings);
         Block block = factory.apply(settings);
         return Registry.register(Registries.BLOCK, key, block);
     }
-
+    /**
+     * You can register both block and its block item at once
+     * **/
+    public static Block registerBlockAndItem(String blockName, Function<AbstractBlock.Settings, Block> factory , AbstractBlock.Settings blockSettings, Item.Settings itemSettings){
+        Block block = registerBlock(blockName, factory,blockSettings );
+        String itemName = blockName.endsWith("_item") ? blockName : blockName + "_item";
+        registerItem(itemName, itemSettings, block);
+        return block;
+    }
+    /**
+     * To associate a block with entity to a block entity
+     * **/
     public static <B extends BlockEntity> BlockEntityType<B> registerBlockEntity(String blockEntityId, FabricBlockEntityTypeBuilder.Factory<B> factory, Block ...blocks){
         Identifier id = id(blockEntityId);
         RegistryKey<BlockEntityType<?>> key = RegistryKey.of(RegistryKeys.BLOCK_ENTITY_TYPE, id);
