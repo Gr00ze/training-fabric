@@ -1,5 +1,6 @@
 package com.gr00ze.training.item;
 
+import com.gr00ze.training.BlockList;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroupEntries;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
@@ -18,10 +19,21 @@ public class TrainingItemGroup {
     public static final RegistryKey<ItemGroup> TRAINING_ITEM_GROUP_KEY = registerItemGroup(GROUP_ID,TRAINING_ITEM_GROUP);
 
     static void addItems(FabricItemGroupEntries itemGroup){
-        itemGroup.add(ItemList.TRAINING_ITEM);
-        itemGroup.add(ItemList.TRAINING_BLOCK_ITEM);
-        itemGroup.add(ItemList.TRAINING_CUSTOM_ITEM);
-        itemGroup.add(ItemList.TRAINING_SOUND_ITEM);
+        //ITEM
+        itemGroup.add(ItemList.SIMPLE_ITEM);
+        itemGroup.add(ItemList.CUSTOM_ITEM);
+        itemGroup.add(ItemList.CUSTOM_SOUND_ITEM);
+        //BLOCK ITEM
+        itemGroup.add(ItemList.SIMPLE_BLOCK_ITEM);
+        itemGroup.add(BlockList.CUSTOM_BLOCK.asItem());
+        itemGroup.add(BlockList.CUSTOM_BLOCK_WITH_ENTITY.asItem());
+
+
+
+        //YOU CAN GET YOUR BLOCK ITEM FROM THE BLOCK
+        //BUT THE BLOCK DON'T HAVE ONE IT WILL CRASH
+
+
     }
 
 
