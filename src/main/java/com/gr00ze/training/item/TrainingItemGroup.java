@@ -1,6 +1,5 @@
 package com.gr00ze.training.item;
 
-import com.gr00ze.training.BlockList;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroupEntries;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
@@ -25,8 +24,9 @@ public class TrainingItemGroup {
         itemGroup.add(ItemList.CUSTOM_SOUND_ITEM);
         //BLOCK ITEM
         itemGroup.add(ItemList.SIMPLE_BLOCK_ITEM);
-        itemGroup.add(BlockList.CUSTOM_BLOCK.asItem());
-        itemGroup.add(BlockList.CUSTOM_BLOCK_WITH_ENTITY.asItem());
+        itemGroup.add(ItemList.CUSTOM_BLOCK_ITEM);
+        itemGroup.add(ItemList.CUSTOM_BLOCK_WITH_ENTITY_ITEM);
+        itemGroup.add(ItemList.CUSTOM_BLOCK_ALTERNATIVE_ITEM);
 
 
 
