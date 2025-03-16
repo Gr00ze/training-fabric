@@ -20,6 +20,7 @@ import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Identifier;
 
 
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 import static com.gr00ze.training.Training.MOD_ID;
@@ -37,34 +38,89 @@ public class RegisterFunctions {
         settings.registryKey(key);
         return key;
     }
-    //WRONG
-    /**
-     * Register a simple block
-     * **/
 
-    public static Block registerBlock(String blockName, AbstractBlock.Settings settings){
-        return registerBlock(blockName, Block::new ,settings);
-    }
-    //RIGHT
+
     /**
      * Register for simple blocks and custom blocks
      * @param blockName Unique block name
      * @param factory is the constructor of your block. Example: {@code Block::new CustomBlock::new}
      * **/
     public static Block registerBlock(String blockName, Function<AbstractBlock.Settings, Block> factory , AbstractBlock.Settings settings){
+        settings = settings == null ? AbstractBlock.Settings.create() : settings;
+        factory = factory == null ? Block::new : factory;
+
         RegistryKey<Block> key = registerBlockKey(id(blockName), settings);
         Block block = factory.apply(settings);
         return Registry.register(Registries.BLOCK, key, block);
     }
+
+    /**
+     * Register a block but everything you register with this will be a {@code Block} and can't be a {@code CustomBlock}
+     * **/
+
+    public static Block registerBlock(String blockName, AbstractBlock.Settings settings){
+        return registerBlock(blockName, Block::new ,settings);
+    }
+    /**
+     * Register a block but everything you register with this will be a {@code Block} and can't be a {@code CustomBlock}
+     * **/
+
+    public static Block registerBlock(String blockName){
+        return registerBlock(blockName, null , null);
+    }
+
+    //BLOCK AND BLOCK ITEM
     /**
      * You can register both block and its block item at once
+     * @param blockName Unique block name
+     * @param blockFactory is the constructor of your block. Example: {@code Block::new CustomBlock::new}
+     * @param blockSettings you can specify what property you block can have or just use {@code null}
+     * @param itemFactory is the constructor of your item. Example: {@code Item::new CustomItem::new}
+     * @return Only the block but un can access item with {@code block.asItem()}
      * **/
-    public static Block registerBlockAndItem(String blockName, Function<AbstractBlock.Settings, Block> factory , AbstractBlock.Settings blockSettings, Item.Settings itemSettings){
-        Block block = registerBlock(blockName, factory,blockSettings );
+    public static Block registerBlockAndItem(String blockName, Function<AbstractBlock.Settings, Block> blockFactory, AbstractBlock.Settings blockSettings, BiFunction<Block, Item.Settings, BlockItem> itemFactory, Item.Settings itemSettings){
+        blockSettings = blockSettings == null ? AbstractBlock.Settings.create() : blockSettings;
+        itemSettings = itemSettings == null ? new Item.Settings() : itemSettings;
+        blockFactory = blockFactory == null ? Block::new : blockFactory;
+        itemFactory = itemFactory == null ? BlockItem::new : itemFactory;
+
+        Block block = registerBlock(blockName, blockFactory,blockSettings );
         String itemName = blockName.endsWith("_item") ? blockName : blockName + "_item";
-        registerItem(itemName, itemSettings, block);
+        registerBlockItem(itemName, itemFactory , itemSettings, block);
         return block;
     }
+    /**
+     *  Same functionality without custom settings
+     *  @see #registerBlockAndItem(String, Function, AbstractBlock.Settings, BiFunction, Item.Settings) full method
+    **/
+    public static Block registerBlockAndItem(String blockName, Function<AbstractBlock.Settings, Block> blockFactory, BiFunction<Block, Item.Settings, BlockItem> itemFactory){
+        return  registerBlockAndItem(blockName,blockFactory, null, itemFactory, null);
+    }
+
+    /**
+     *  Same functionality without custom item and item settings
+     *  @see #registerBlockAndItem(String, Function, AbstractBlock.Settings, BiFunction, Item.Settings) full method
+     **/
+    public static Block registerBlockAndItem(String blockName, Function<AbstractBlock.Settings, Block> blockFactory, AbstractBlock.Settings blockSettings){
+        return  registerBlockAndItem(blockName,blockFactory, blockSettings, null, null);
+    }
+
+    /**
+     *  Same functionality without custom item and item settings
+     *  @see #registerBlockAndItem(String, Function, AbstractBlock.Settings, BiFunction, Item.Settings) full method
+     **/
+    public static Block registerBlockAndItem(String blockName, BiFunction<Block, Item.Settings, BlockItem> itemFactory, Item.Settings itemSettings){
+        return  registerBlockAndItem(blockName,null, null, itemFactory, itemSettings);
+    }
+
+    /**
+     *  Why would you use this overload?
+     *  @see #registerBlockAndItem(String, Function, AbstractBlock.Settings, BiFunction, Item.Settings) full method
+     **/
+    public static Block registerBlockAndItem(String blockName){
+        return  registerBlockAndItem(blockName,null, null, null, null);
+    }
+    //BLOCK ENTITY
     /**
      * To associate a block with entity to a block entity
      * **/
@@ -80,17 +136,35 @@ public class RegisterFunctions {
         settings.registryKey(key);
         return key;
     }
+    /**
+     * Register block item of already given block
+     * **/
+    public static BlockItem registerBlockItem(String itemName, BiFunction<Block, Item.Settings, BlockItem> factory, Item.Settings settings, Block block){
+        settings = settings == null ? new Item.Settings() : settings;
+        factory = factory == null ? BlockItem::new : factory;
 
-    public static Item registerItem(String itemName, Item.Settings settings, Block block){
         RegistryKey<Item> key = registerItemKey(settings,id(itemName));
-        BlockItem item = new BlockItem(block, settings);
+        BlockItem item = factory.apply(block, settings);
         return Registry.register(Registries.ITEM, key, item);
     }
+    /**
+     * Simpler way to use:
+     * @see #registerBlockItem(String, BiFunction, Item.Settings, Block)
+     * **/
+    public static Item registerBlockItem(String itemName, Block block){
+        return registerBlockItem(itemName, null, null, block);
+    }
 
-    public static <I extends Item> Item registerItem(String itemName, Function<Item.Settings, I> factory, Item.Settings settings) {
+    public static Item registerItem(String itemName, Function<Item.Settings, Item> factory, Item.Settings settings) {
+        settings = settings == null ? new Item.Settings() : settings;
+        factory = factory == null ? Item::new : factory;
+
         RegistryKey<Item> key = registerItemKey(settings, id(itemName));
-        I item = factory.apply(settings);
+        Item item = factory.apply(settings);
         return Registry.register(Registries.ITEM, key, item);
+    }
+    public static <I extends Item> Item registerItem(String itemName) {
+        return registerItem(itemName, null, null);
     }
 
 
@@ -115,7 +189,7 @@ public class RegisterFunctions {
     public static SoundEvent registerSound(String soundName){
         Identifier identifier = id(soundName);
         RegistryKey<SoundEvent> key = RegistryKey.of(RegistryKeys.SOUND_EVENT, identifier);
-        // MA LA KEY LA DEVO USARE?????
+        //TODO: DO I HAVE TO USE THE KEY OR NOT?????????
         return Registry.register(Registries.SOUND_EVENT, identifier, SoundEvent.of(identifier));
     }
 }
