@@ -15,7 +15,9 @@ public class TrainingModelProvider extends FabricModelProvider {
     @Override
     public void generateBlockStateModels(BlockStateModelGenerator blockStateModelGenerator) {
         blockStateModelGenerator.registerSimpleCubeAll(BlockList.SIMPLE_BLOCK);
+        blockStateModelGenerator.registerSimpleState(BlockList.CUSTOM_BLOCK);
         blockStateModelGenerator.registerSimpleState(BlockList.CUSTOM_BLOCK_WITH_ENTITY);
+        blockStateModelGenerator.registerSimpleState(BlockList.CUSTOM_BLOCK_ALTERNATIVE);
 
 
 
