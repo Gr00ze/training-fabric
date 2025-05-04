@@ -1,6 +1,5 @@
 package com.gr00ze.training;
 
-import com.gr00ze.training.render.BadWayToRegisterRendering;
 import com.gr00ze.training.render.RendererList;
 import net.fabricmc.api.ClientModInitializer;
 
