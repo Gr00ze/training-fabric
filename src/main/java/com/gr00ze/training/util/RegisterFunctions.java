@@ -176,7 +176,7 @@ public class RegisterFunctions {
     }
 
     //ENTITY
-    public static EntityType<? extends MobEntity> registerEntityType(String entityID, EntityType.Builder<? extends MobEntity> entityBuilder){
+    public static <M extends MobEntity> EntityType<M> registerEntityType(String entityID, EntityType.Builder<M> entityBuilder){
         Identifier identifier = id(entityID);
         RegistryKey<EntityType<?>> key = RegistryKey.of(RegistryKeys.ENTITY_TYPE, identifier);
         return Registry.register(Registries.ENTITY_TYPE, key, entityBuilder.build(key));
