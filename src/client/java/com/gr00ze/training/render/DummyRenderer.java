@@ -6,11 +6,11 @@ import net.minecraft.client.render.entity.state.LivingEntityRenderState;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.util.Identifier;
 
-import static com.gr00ze.training.Training.MOD_ID;
+import static com.gr00ze.training.util.RegisterFunctions.id;
 
 public class DummyRenderer<E extends MobEntity> extends MobEntityRenderer<E, LivingEntityRenderState, DummyModel> {
-    private static final Identifier TEXTURE = Identifier.of(MOD_ID, RendererList.getPath("dummy.png"));
-    public  static final EntityModelLayer DUMMY_LAYER = new EntityModelLayer(Identifier.of(MOD_ID, "dummy_layer"),"main");;
+    private static final Identifier TEXTURE = id(RendererList.getPath("dummy.png"));
+    public  static final EntityModelLayer DUMMY_LAYER = new EntityModelLayer(id( "dummy_layer"),"main");;
     private static final float SHADOW_SIZE = 0F;
 
     public DummyRenderer(EntityRendererFactory.Context context){
