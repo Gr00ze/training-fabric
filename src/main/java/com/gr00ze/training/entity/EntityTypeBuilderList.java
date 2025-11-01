@@ -2,7 +2,9 @@ package com.gr00ze.training.entity;
 
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
-
+/**
+ * This class is meant to be a list of builder for entity types
+ **/
 public class EntityTypeBuilderList {
 
     public static EntityType.Builder<DummyMobEntity> DUMMY_MOB_ENTITY_BUILDER = EntityType.Builder.create(DummyMobEntity::new, SpawnGroup.CREATURE);
