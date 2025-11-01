@@ -12,6 +12,7 @@ import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
+import net.minecraft.particle.ParticleType;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
@@ -192,4 +193,8 @@ public class RegisterFunctions {
         //TODO: DO I HAVE TO USE THE KEY OR NOT?????????
         return Registry.register(Registries.SOUND_EVENT, identifier, SoundEvent.of(identifier));
     }
+
+    public static <P extends ParticleType<?>> P registerParticle(String particleName, P particleType){
+        return Registry.register(Registries.PARTICLE_TYPE, id(particleName), particleType);
+    };
 }

@@ -1,8 +1,11 @@
 package com.gr00ze.training;
 
+import com.gr00ze.training.block.BlockList;
 import com.gr00ze.training.entity.EntityTypeList;
 import com.gr00ze.training.item.ItemList;
 import com.gr00ze.training.item.TrainingItemGroup;
+import com.gr00ze.training.particle.ParticleList;
+import com.gr00ze.training.sound.SoundList;
 import net.fabricmc.api.ModInitializer;
 
 import org.slf4j.Logger;
@@ -28,6 +31,7 @@ public class Training implements ModInitializer {
 		BlockList.initialize();
 		EntityTypeList.initialize();
 		SoundList.initialize();
+        ParticleList.initialize();
 		
 	}
 }
