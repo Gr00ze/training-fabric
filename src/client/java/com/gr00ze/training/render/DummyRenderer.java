@@ -1,5 +1,6 @@
 package com.gr00ze.training.render;
 
+import com.gr00ze.training.model.DummyModel;
 import net.minecraft.client.render.entity.*;
 import net.minecraft.client.render.entity.model.EntityModelLayer;
 import net.minecraft.client.render.entity.state.LivingEntityRenderState;

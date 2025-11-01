@@ -1,4 +1,4 @@
-package com.gr00ze.training.render;
+package com.gr00ze.training.model;
 
 import net.minecraft.client.model.*;
 import net.minecraft.client.render.entity.model.EntityModel;

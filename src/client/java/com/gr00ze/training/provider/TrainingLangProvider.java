@@ -1,6 +1,6 @@
 package com.gr00ze.training.provider;
 
-import com.gr00ze.training.BlockList;
+import com.gr00ze.training.block.BlockList;
 import com.gr00ze.training.entity.EntityTypeList;
 import com.gr00ze.training.item.ItemList;
 import com.gr00ze.training.item.TrainingItemGroup;

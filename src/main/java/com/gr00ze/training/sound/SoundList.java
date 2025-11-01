@@ -1,4 +1,4 @@
-package com.gr00ze.training;
+package com.gr00ze.training.sound;
 
 import com.gr00ze.training.util.RegisterFunctions;
 import net.minecraft.sound.SoundEvent;

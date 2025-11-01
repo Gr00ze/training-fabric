@@ -1,6 +1,6 @@
 package com.gr00ze.training.provider;
 
-import com.gr00ze.training.BlockList;
+import com.gr00ze.training.block.BlockList;
 import com.gr00ze.training.item.ItemList;
 import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;

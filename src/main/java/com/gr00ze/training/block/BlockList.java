@@ -1,7 +1,5 @@
-package com.gr00ze.training;
+package com.gr00ze.training.block;
 
-import com.gr00ze.training.block.TrainingCustomBlock;
-import com.gr00ze.training.block.TrainingCustomBlockWithEntity;
 import com.gr00ze.training.block.blockentity.TrainingCustomBlockEntity;
 import com.gr00ze.training.item.TrainingCustomBlockItem;
 import net.minecraft.block.Block;

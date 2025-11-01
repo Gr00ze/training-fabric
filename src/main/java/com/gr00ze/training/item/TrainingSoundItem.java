@@ -1,6 +1,6 @@
 package com.gr00ze.training.item;
 
-import com.gr00ze.training.SoundList;
+import com.gr00ze.training.sound.SoundList;
 import com.gr00ze.training.entity.DummySoundEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;

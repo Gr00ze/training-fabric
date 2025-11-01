@@ -1,6 +1,6 @@
 package com.gr00ze.training.block.blockentity;
 
-import com.gr00ze.training.BlockList;
+import com.gr00ze.training.block.BlockList;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.util.math.BlockPos;

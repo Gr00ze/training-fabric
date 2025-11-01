@@ -1,6 +1,5 @@
 package com.gr00ze.training.block;
 
-import com.gr00ze.training.BlockList;
 import com.gr00ze.training.block.blockentity.TrainingCustomBlockEntity;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.block.*;

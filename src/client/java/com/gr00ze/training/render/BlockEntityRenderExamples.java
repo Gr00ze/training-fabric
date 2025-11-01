@@ -1,6 +1,6 @@
 package com.gr00ze.training.render;
 
-import com.gr00ze.training.BlockList;
+import com.gr00ze.training.block.BlockList;
 import com.gr00ze.training.block.blockentity.TrainingCustomBlockEntity;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.MinecraftClient;
