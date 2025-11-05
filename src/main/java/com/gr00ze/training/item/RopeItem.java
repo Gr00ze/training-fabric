@@ -1,5 +1,6 @@
 package com.gr00ze.training.item;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MovementType;
 import net.minecraft.entity.player.PlayerEntity;
@@ -11,6 +12,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.EntityHitResult;
+import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec2f;
 import net.minecraft.util.math.Vec3d;
@@ -29,18 +31,12 @@ public class RopeItem extends Item {
     public ActionResult use(World world, PlayerEntity user, Hand hand) {
         if(!world.isClient){
             double reach = 10;
-            Vec3d eyePos = user.getCameraPosVec(1.0F);
-            Vec3d lookVec = user.getRotationVec(1.0F);
-            Vec3d reachVec = eyePos.add(lookVec.multiply(reach));
 
+            HitResult hit = user.raycast(reach, 0 , false);
+            if (hit != null && hit instanceof EntityHitResult entityHitResult) {
 
-            Box box = user.getBoundingBox().stretch(lookVec.multiply(reach)).expand(1.0D);
-
-
-            EntityHitResult hit = ProjectileUtil.getEntityCollision(world, user, eyePos, reachVec, box, e -> e instanceof LivingEntity && e != user);
-
-            if (hit != null && hit.getEntity() instanceof LivingEntity target) {
                 // Calcola la distanza e applica la forza come in useOnEntity
+                Entity target = entityHitResult.getEntity();
                 Vec3d distance = user.getPos().subtract(target.getPos());
                 target.addVelocity(distance);
                 user.sendMessage(Text.literal("Target colpito!"), true);
@@ -53,7 +49,7 @@ public class RopeItem extends Item {
                     double x = from.x + (to.x - from.x) * t;
                     double y = from.y + (to.y - from.y) * t;
                     double z = from.z + (to.z - from.z) * t;
-                    world.addParticle(ParticleTypes.SMOKE, x, y, z, 0, 0, 0);
+                    world.addParticleClient(ParticleTypes.SMOKE, x, y, z, 0, 0, 0);
                 }
 
                 return ActionResult.SUCCESS;

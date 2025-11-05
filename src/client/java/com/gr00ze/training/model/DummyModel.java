@@ -18,7 +18,7 @@ public class DummyModel extends EntityModel<LivingEntityRenderState> {
         ModelPartData root = modelPartData.addChild("root", ModelPartBuilder.create().uv(0, 0).cuboid(-4.0F, -28.0F, -4.0F, 8.0F, 8.0F, 8.0F, new Dilation(0.0F))
                 .uv(24, 0).cuboid(-1.0F, -6.0F, -1.0F, 2.0F, 6.0F, 2.0F, new Dilation(0.0F))
                 .uv(0, 0).cuboid(-1.0F, -20.0F, -1.0F, 2.0F, 4.0F, 2.0F, new Dilation(0.0F))
-                .uv(0, 16).cuboid(-3.0F, -16.0F, -4.0F, 6.0F, 10.0F, 8.0F, new Dilation(0.0F)), ModelTransform.pivot(0.0F, 24.0F, 0.0F));
+                .uv(0, 16).cuboid(-3.0F, -16.0F, -4.0F, 6.0F, 10.0F, 8.0F, new Dilation(0.0F)), ModelTransform.origin(0.0F, 24.0F, 0.0F));
         return TexturedModelData.of(modelData, 64, 64);
     }
 
