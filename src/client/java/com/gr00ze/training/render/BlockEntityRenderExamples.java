@@ -2,22 +2,16 @@ package com.gr00ze.training.render;
 
 import com.gr00ze.training.block.BlockList;
 import com.gr00ze.training.block.blockentity.TrainingCustomBlockEntity;
-import com.mojang.blaze3d.pipeline.BlendFunction;
 import com.mojang.blaze3d.pipeline.RenderPipeline;
 import com.mojang.blaze3d.platform.DepthTestFunction;
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import net.fabricmc.fabric.api.renderer.v1.render.BlockVertexConsumerProvider;
-import net.fabricmc.fabric.api.renderer.v1.render.FabricBlockModelRenderer;
 import net.minecraft.client.MinecraftClient;
 
 import net.minecraft.client.gl.RenderPipelines;
-import net.minecraft.client.gl.ShaderLoader;
-import net.minecraft.client.gl.ShaderProgram;
 import net.minecraft.client.render.*;
 import net.minecraft.client.render.block.BlockRenderManager;
 
-import net.minecraft.client.render.block.entity.EndPortalBlockEntityRenderer;
 import net.minecraft.client.render.model.BlockStateModel;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
@@ -26,31 +20,26 @@ import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
 import java.util.Map;
-import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
 import static com.gr00ze.training.Training.MOD_ID;
 import static com.gr00ze.training.util.RegisterFunctions.id;
 import static net.minecraft.client.gl.RenderPipelines.RENDERTYPE_END_PORTAL_SNIPPET;
-import static net.minecraft.client.gl.RenderPipelines.register;
 
 public class BlockEntityRenderExamples {
     public static void exampleVertexCustomRenderLayer(Vector3f center, MatrixStack matrices, VertexConsumerProvider vertexConsumers) {
         // Render layer definition
-
-        VertexConsumer vertexConsumer = vertexConsumers.getBuffer(RenderLayer.of(
+        VertexConsumer consumer = vertexConsumers.getBuffer(RenderLayer.of(
                 "web_layer",
-                262144,
-                RenderPipeline.builder(new RenderPipeline.Snippet[]{RENDERTYPE_END_PORTAL_SNIPPET})
-
+                1024,
+                RenderPipeline.builder(RENDERTYPE_END_PORTAL_SNIPPET)
                         .withLocation("pipeline/end_portal")
                         .withShaderDefine("PORTAL_LAYERS", 15)
-                        .withDepthTestFunction(DepthTestFunction.NO_DEPTH_TEST)
+                        .withDepthTestFunction(DepthTestFunction.LEQUAL_DEPTH_TEST)
+                        .withVertexFormat(VertexFormats.POSITION, VertexFormat.DrawMode.TRIANGLES)
                         .build(),
                 RenderLayer.MultiPhaseParameters.builder()
-
-
                         .texture(RenderPhase.Textures.create()
                                 .add(id("textures/example_cobweb.png"),false)
                                 .add(id("textures/example_cobweb.png"),false)
@@ -59,25 +48,13 @@ public class BlockEntityRenderExamples {
 
         ));
 
-
         // Shape
         matrices.push();
         matrices.translate(center.x, center.y, center.z);
-        matrices.scale(4.2f, 5.9f, 4.1f); // Scala in modo non uniforme per deformare la forma
-        matrices.multiply(RotationAxis.POSITIVE_Z.rotation(10)); // Leggera rotazione per evitare simmetria perfetta
-
         Matrix4f matrix = matrices.peek().getPositionMatrix();
-
-        float x1 = 1.1f, y2 = 0.9f;
-        float x2 = -1.2f, y1 = -1.1f;
-        float u1 = 0.0f, v1 = 0.0f;
-        float u2 = 1.0f, v2 = 1.0f;
-        int color = 0xFFFFFFFF; // Bianco con piena opacità
-
-        vertexConsumer.vertex(matrix, x1, y1, 0).texture(0, 0.5F).color(color);
-        vertexConsumer.vertex(matrix, x2, y1, 0).texture(0, 1).color(color);
-        vertexConsumer.vertex(matrix, x2, y2, 0).texture(1, 1).color(color);
-        vertexConsumer.vertex(matrix, x1, y2, 0).texture(1, 1).color(color);
+        consumer.vertex(matrix, 0.5f, 1.0f, 0.5f).color(255, 0, 0, 255);  // Punto superiore
+        consumer.vertex(matrix, 1.0f, 0.0f, 0f).color(0, 255, 0, 255);  // Punto sinistro
+        consumer.vertex(matrix, 0f, 0.0f, 0f).color(0, 0, 255, 255);  // Punto destro
 
         matrices.pop();
     }
@@ -130,20 +107,6 @@ public class BlockEntityRenderExamples {
         BlockRenderManager blockRenderManager = MinecraftClient.getInstance().getBlockRenderManager();
         BlockStateModel model = blockRenderManager.getModel(BlockList.CUSTOM_BLOCK_WITH_ENTITY.getDefaultState());
 
-
-
-        // Renderizza il modello
-        /*
-        FabricBlockModelRenderer.render(
-                matrices.peek(),
-                new VertexConverter(vertexConsumers),
-                model,
-                255,255,255,255,255,
-                entity.getWorld(),
-                entity.getPos(),
-                entity.getCachedState()
-        )
-        */
         blockRenderManager.getModelRenderer().render(
                 entity.getWorld(),
                 model,
@@ -326,54 +289,13 @@ public class BlockEntityRenderExamples {
     public static void exampleTexturedTriangle(Vector3f center, Identifier texture, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
         matrices.push();
         matrices.translate(center.x,center.y, center.z);
-
         MatrixStack.Entry entry = matrices.peek();
         Matrix4f matrix = entry.getPositionMatrix();
-        Tessellator tessellator = Tessellator.getInstance();
-        /*
-        //For colors
-        BufferBuilder buffer = tessellator.begin(VertexFormat.DrawMode.TRIANGLES, VertexFormats.POSITION_TEXTURE);
-        buffer.vertex(matrix, 0.5f, 1.0f, 0.5f).texture(0.5F, 0).color(255, 255, 255, 255).light(light);  // Punto superiore
-        buffer.vertex(matrix, 1.0f, 0.0f, 0f).texture(0, 1).color(255, 255, 255, 255).light(light);        // Punto sinistro
-        buffer.vertex(matrix, 0f, 0.0f, 0f).texture(1, 1).color(255, 255, 255, 255).light(light);
-        */
-        //RenderSystem.setShader(ShaderProgramKeys.POSITION_TEX);
-        //RenderSystem.setShaderTexture(0, texture);
-
-        //System.out.println("Texture esiste? " + MinecraftClient.getInstance().getResourceManager().getResource(texture).isPresent());
-
-
-
-        //BufferRenderer.drawWithGlobalProgram(buffer.end());
-
-        //nuovo
-        /*
-        RenderPipeline.Snippet mySnippet = new RenderPipeline.Snippet(
-                Optional.of(id("shaders/core/position_tex.vsh")), // vertex shader
-                Optional.of(id("shaders/core/position_tex.fsh")), // fragment shader
-                Optional.empty(),   // shader defines
-                Optional.empty(),   // samplers
-                Optional.empty(),   // uniforms
-                Optional.empty(),   // blend function
-                Optional.of(DepthTestFunction.LEQUAL_DEPTH_TEST), // depth test
-                Optional.empty(),         // polygon mode (es. FILL, LINE, ecc.)
-                Optional.of(true),  // cull
-                Optional.of(true),  // write color
-                Optional.of(true),  // write alpha
-                Optional.of(true),  // write depth
-                Optional.empty(),   // logic op
-                Optional.of(VertexFormats.POSITION_TEXTURE), // vertex format
-                Optional.of(VertexFormat.DrawMode.TRIANGLES) // draw mode
-        );
-        */
-
         RenderLayer renderLayer = RenderLayer.of( "triangle_layer",
-                262144, // buffer size
-                RenderPipeline.builder(new RenderPipeline.Snippet[]{RenderPipelines.POSITION_TEX_COLOR_SNIPPET}) // nessuno snippet per ora
+                64, // buffer size
+                RenderPipeline.builder(RenderPipelines.POSITION_TEX_COLOR_SNIPPET) // nessuno snippet per ora
                         .withLocation("pipeline/triangle")
                         .withVertexFormat(VertexFormats.POSITION_TEXTURE_COLOR,VertexFormat.DrawMode.TRIANGLES)
-                        //.withVertexShader(id("shaders/core/position_tex.vsh"))
-                        //.withFragmentShader(id("shaders/core/position_tex.fsh"))
                         .build(),
                 RenderLayer.MultiPhaseParameters.builder()
                         .texture(RenderPhase.Textures.create()
@@ -381,63 +303,34 @@ public class BlockEntityRenderExamples {
                                 .build())
                         .build(false)
         );
-
-
-        //RenderLayer renderLayer = RenderLayer.getEntityTranslucent(texture);
-
         VertexConsumer consumer = vertexConsumers.getBuffer(renderLayer);
         consumer.vertex(matrix, 0.5f, 1.0f, 0.5f).texture(0.5F, 0).color(255, 255, 255, 255).light(light);  // Punto superiore
         consumer.vertex(matrix, 1.0f, 0.0f, 0f).texture(0, 1).color(255, 255, 255, 255).light(light);        // Punto sinistro
         consumer.vertex(matrix, 0f, 0.0f, 0f).texture(1, 1).color(255, 255, 255, 255).light(light);
-        //consumer.vertex(matrix, 0f, 0.0f, 1f).texture(1, 1).color(255, 255, 255, 255).light(light);
-
-        //RenderSystem.assertOnRenderThread();
-        //System.out.println(ShaderLoader.loadShaderSource(Identifier.of("training","shaders/core/position_tex.vsh")));
-
         matrices.pop(); // Rimuovi la matrice
     }
 
 
 
-    public static void exampleTessellatorRGBTriangle(Vector3f center, MatrixStack matrices, VertexConsumerProvider vertexConsumers) {
+    public static void exampleRGBTriangle(Vector3f center, MatrixStack matrices, VertexConsumerProvider vertexConsumers) {
         matrices.push();
         matrices.translate(center.x,center.y, center.z);
-
         Matrix4f matrix = matrices.peek().getPositionMatrix();
-        Tessellator tessellator = Tessellator.getInstance();
-
         RenderLayer renderLayer = RenderLayer.of( "triangle_rgb_layer",
-                262144, // buffer size
-                RenderPipeline.builder(new RenderPipeline.Snippet[]{RenderPipelines.POSITION_COLOR_SNIPPET}) // nessuno snippet per ora
+                256, // buffer size
+                RenderPipeline.builder(RenderPipelines.POSITION_COLOR_SNIPPET) // nessuno snippet per ora
                         .withLocation("pipeline/triangle_rgb")
                         .withVertexFormat(VertexFormats.POSITION_COLOR,VertexFormat.DrawMode.TRIANGLES)
-                        //.withVertexShader(id("shaders/core/position_tex.vsh"))
-                        //.withFragmentShader(id("shaders/core/position_tex.fsh"))
                         .build(),
                 RenderLayer.MultiPhaseParameters.builder()
                         .texture(RenderPhase.Textures.create()
                                 .build())
                         .build(false)
         );
-        //For colors
-        /*
-        BufferBuilder buffer = tessellator.begin(VertexFormat.DrawMode.TRIANGLES, VertexFormats.POSITION_COLOR);
-        buffer.vertex(matrix, 0.5f, 1.0f, 0.5f).color(255, 0, 0, 255);  // Punto superiore
-        buffer.vertex(matrix, 1.0f, 0.0f, 0f).color(0, 255, 0, 255);  // Punto sinistro
-        buffer.vertex(matrix, 0f, 0.0f, 0f).color(0, 0, 255, 255);  // Punto destro
-        */
-        //RenderSystem.setShader(ShaderProgramKeys.POSITION_COLOR);
-
-
         VertexConsumer consumer = vertexConsumers.getBuffer(renderLayer);
         consumer.vertex(matrix, 0.5f, 1.0f, 0.5f).color(255, 0, 0, 255);  // Punto superiore
         consumer.vertex(matrix, 1.0f, 0.0f, 0f).color(0, 255, 0, 255);  // Punto sinistro
         consumer.vertex(matrix, 0f, 0.0f, 0f).color(0, 0, 255, 255);  // Punto destro
-        //RenderSystem.disableCull();
-        //RenderSystem.enableDepthTest();
-
-        //BufferRenderer.drawWithGlobalProgram(buffer.end());
-
         matrices.pop();
     }
 
@@ -448,20 +341,10 @@ public class BlockEntityRenderExamples {
         matrices.push();
         matrices.translate(center.x,center.y, center.z);
         matrices.scale(0.5f,0.5f,0.5f);
-
         drawRotatingCube(vertexConsumers, matrices, light, overlay, entity.getRotationAngle() * 0.1f);
         drawRotatingCube(vertexConsumers, matrices, light, overlay, -entity.getRotationAngle()  * 0.1f);
         //CUBO 2
-
-
-
         matrices.pop();
-
-
-
-
-
-
     }
 
     private static void drawRotatingCube(VertexConsumerProvider vertexConsumers, MatrixStack matrices, int light, int overlay, float angle) {
@@ -471,22 +354,20 @@ public class BlockEntityRenderExamples {
         matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(angle));
         matrices.translate(-0.5f,-0.5f,-0.5f); //centra rotazione
 
-
         MatrixStack.Entry entry = matrices.peek();
 
-        Identifier texture = Identifier.of(MOD_ID, "textures/block/training_custom_block_with_entity.png");
+        Identifier texture = id("textures/block/training_custom_block_with_entity.png");
         VertexConsumer vertexConsumer = vertexConsumers.getBuffer(RenderLayer.getEntityTranslucent(texture));
 
         // Definire vertici con rotazione applicata
         // 🔹 Fronte (Z+)
         drawCube(vertexConsumer, entry, light, overlay);
 
-
         matrices.pop();
     }
 
 
-    private static void drawCube(VertexConsumer vertexConsumer,MatrixStack.Entry entry, int light, int overlay) {
+    private static void drawCube(VertexConsumer vertexConsumer, MatrixStack.Entry entry, int light, int overlay) {
         float[][] vertices = {
                 {0, 0, 0}, {1, 0, 0}, {1, 1, 0}, {0, 1, 0}, // Back (Z-)
                 {0, 0, 1}, {1, 0, 1}, {1, 1, 1}, {0, 1, 1}, // Front (Z+)

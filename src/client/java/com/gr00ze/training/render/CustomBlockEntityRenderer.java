@@ -21,9 +21,7 @@ public class CustomBlockEntityRenderer implements BlockEntityRenderer<TrainingCu
 
     @Override
     public void render(TrainingCustomBlockEntity entity, float tickProgress, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay, Vec3d cameraPos) {
-        //Render Layer Custom
-        //Changed
-        exampleVertexCustomRenderLayer(new Vector3f(0, 10, 0), matrices, vertexConsumers);
+
         //VERTEX CONSUMER
         //Changed
         exampleVertexLoadAndAnimateJsonModel(new Vector3f(2.5F, 1, 0.5F), entity, matrices, vertexConsumers);
@@ -47,7 +45,10 @@ public class CustomBlockEntityRenderer implements BlockEntityRenderer<TrainingCu
         //Changed
         exampleTexturedTriangle(new Vector3f(1, 2, 0), id("textures/block/triangle_template.png"), matrices, vertexConsumers, light, overlay);
         //Changed
-        exampleTessellatorRGBTriangle(new Vector3f(0, 2, 0), matrices, vertexConsumers);
+        exampleRGBTriangle(new Vector3f(0, 2, 0), matrices, vertexConsumers);
+        //Render Layer Custom
+        //Changed
+        exampleVertexCustomRenderLayer(new Vector3f(-1, 2, 0), matrices, vertexConsumers);
 
 
     }
