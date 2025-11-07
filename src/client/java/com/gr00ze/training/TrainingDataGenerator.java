@@ -13,9 +13,9 @@ public class TrainingDataGenerator implements DataGeneratorEntrypoint {
 		//
 		FabricDataGenerator.Pack trainingPack = fabricDataGenerator.createPack();
 
-		fabricDataGenerator.createPack().addProvider(TrainingLangProvider::new);
-		fabricDataGenerator.createPack().addProvider(TrainingModelProvider::new);
-		fabricDataGenerator.createPack().addProvider(TrainingRecipeProvider::new);
+        trainingPack.addProvider(TrainingLangProvider::new);
+        trainingPack.addProvider(TrainingModelProvider::new);
+        trainingPack.addProvider(TrainingRecipeProvider::new);
 
 	}
 
