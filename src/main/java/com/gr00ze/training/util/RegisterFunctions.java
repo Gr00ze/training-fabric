@@ -17,6 +17,9 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
+import net.minecraft.resource.featuretoggle.FeatureSet;
+import net.minecraft.screen.ScreenHandler;
+import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Identifier;
 
@@ -197,4 +200,8 @@ public class RegisterFunctions {
     public static <P extends ParticleType<?>> P registerParticle(String particleName, P particleType){
         return Registry.register(Registries.PARTICLE_TYPE, id(particleName), particleType);
     };
+
+    public static <S extends ScreenHandler> ScreenHandlerType<S> registerScreenType(String screenName, ScreenHandlerType.Factory<S> screenHandlerFactory, FeatureSet featureSet){
+        return Registry.register(Registries.SCREEN_HANDLER,id(screenName), new ScreenHandlerType<>(screenHandlerFactory, featureSet));
+    }
 }
