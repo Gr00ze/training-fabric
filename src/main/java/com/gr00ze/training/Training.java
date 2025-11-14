@@ -4,7 +4,9 @@ import com.gr00ze.training.block.BlockList;
 import com.gr00ze.training.entity.EntityTypeList;
 import com.gr00ze.training.item.ItemList;
 import com.gr00ze.training.item.TrainingItemGroup;
+import com.gr00ze.training.network.Network;
 import com.gr00ze.training.particle.ParticleList;
+import com.gr00ze.training.screen.ScreenTypes;
 import com.gr00ze.training.sound.SoundList;
 import net.fabricmc.api.ModInitializer;
 
@@ -32,6 +34,8 @@ public class Training implements ModInitializer {
 		EntityTypeList.initialize();
 		SoundList.initialize();
         ParticleList.initialize();
+        ScreenTypes.initialize();
+        Network.initialize();
 		
 	}
 }
