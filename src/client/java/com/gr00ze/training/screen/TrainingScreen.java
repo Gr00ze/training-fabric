@@ -1,13 +1,17 @@
-package com.gr00ze.training.gui;
+package com.gr00ze.training.screen;
 
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.screen.ingame.ScreenHandlerProvider;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.toast.SystemToast;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.screen.ScreenHandler;
 import net.minecraft.text.Text;
 
-public class TrainingScreen extends Screen{
+public class TrainingScreen extends Screen implements ScreenHandlerProvider<CustomScreenHandler> {
     Screen parent = null;
+    CustomScreenHandler customScreenHandler;
     public TrainingScreen(Text title) {
         super(title);
     }
@@ -16,6 +20,13 @@ public class TrainingScreen extends Screen{
         super(title);
         this.parent = parent;
     }
+
+    public TrainingScreen(CustomScreenHandler customScreenHandler, PlayerInventory stacks, Text text) {
+        super(text);
+        this.customScreenHandler = customScreenHandler;
+    }
+
+
     @Override
     protected void init() {
         super.init();
@@ -36,5 +47,11 @@ public class TrainingScreen extends Screen{
     @Override
     public void close() {
         this.client.setScreen(parent);
+    }
+
+
+    @Override
+    public CustomScreenHandler getScreenHandler() {
+        return customScreenHandler;
     }
 }

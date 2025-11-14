@@ -24,6 +24,7 @@ public class TrainingItemGroup {
         itemGroup.add(ItemList.SIMPLE_ITEM);
         itemGroup.add(ItemList.CUSTOM_ITEM);
         itemGroup.add(ItemList.CUSTOM_SOUND_ITEM);
+        itemGroup.add(ItemList.CUSTOM_SCREEN_ITEM);
         //BLOCK ITEM
         itemGroup.add(ItemList.SIMPLE_BLOCK_ITEM);
         itemGroup.add(ItemList.CUSTOM_BLOCK_ITEM);
