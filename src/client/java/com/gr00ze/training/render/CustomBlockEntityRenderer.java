@@ -50,6 +50,7 @@ public class CustomBlockEntityRenderer implements BlockEntityRenderer<TrainingCu
         //Changed
         exampleVertexCustomRenderLayer(new Vector3f(-1, 2, 0), matrices, vertexConsumers);
 
+        exampleCurve(new Vector3f(0, 4, 0), matrices, vertexConsumers);
 
     }
 
