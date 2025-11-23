@@ -16,9 +16,12 @@ import net.minecraft.client.render.model.BlockStateModel;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.RotationAxis;
+import net.minecraft.util.math.Vec3d;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -397,6 +400,51 @@ public class BlockEntityRenderExamples {
                 .overlay(overlay)
                 .light(light)
                 .normal(entry, nx, ny, nz);
+    }
+
+    public static void exampleCurve(Vector3f center, MatrixStack matrices, VertexConsumerProvider vertexConsumers){
+        //curve generation
+        List<Vec3d> curve = new ArrayList<>();
+        int segments = 80;
+        double a = -10;   // apre verso il basso
+        double b = 0.0;    // inclinazione della parabola
+        double c = 0.0;    // traslazione verticale
+
+        double minY = -0.5;   // quanto sotto può arrivare
+        double maxY =  0.5;   // quanto sopra può salire
+
+        for (int i = 0; i <= segments; i++) {
+            double t = (double) i / segments;
+
+            double x = (t - 0.5) * 2;   // larghezza da -1 a +1
+            double y = a * x * x + b * x + c;
+            //y = Math.max(minY, Math.min(maxY, y));
+            if(y > maxY || y < minY)continue;
+            curve.add(new Vec3d(x, y, 0));
+        }
+        //drawing
+        VertexConsumer vc = vertexConsumers.getBuffer(RenderLayer.getLines());
+
+        matrices.push();
+        matrices.translate(center.x,center.y, center.z);
+        for (int i = 0; i < curve.size() - 1; i++) {
+            Vec3d p1 = curve.get(i);
+            Vec3d p2 = curve.get(i + 1);
+
+            vc.vertex(matrices.peek(), (float)p1.x, (float)p1.y, 0)
+                    .color(255, 255, 200, 255)    // giallo/bianco
+                    .light(0xF000F0)
+                    .normal(1,1,1);
+
+            vc.vertex(matrices.peek(), (float)p2.x, (float)p2.y, 0)
+                    .color(255, 255, 200, 255)
+                    .light(0xF000F0)
+                    .normal(1,1,1);
+        }
+        matrices.pop();
+
+
+
     }
 
 
