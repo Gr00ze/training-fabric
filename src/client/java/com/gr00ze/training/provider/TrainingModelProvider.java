@@ -28,6 +28,8 @@ public class TrainingModelProvider extends FabricModelProvider {
         itemModelGenerator.register(ItemList.SIMPLE_ITEM, Models.GENERATED);
         itemModelGenerator.register(ItemList.CUSTOM_ITEM, Models.GENERATED);
         itemModelGenerator.register(ItemList.CUSTOM_SOUND_ITEM, Models.GENERATED);
+        itemModelGenerator.register(ItemList.CUSTOM_SCREEN_ITEM, Models.GENERATED);
+        itemModelGenerator.register(ItemList.ROPE_ITEM, Models.GENERATED);
     }
 
 
