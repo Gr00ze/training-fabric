@@ -2,9 +2,14 @@ package com.gr00ze.training.render;
 
 import com.gr00ze.training.block.BlockList;
 import com.gr00ze.training.entity.EntityTypeList;
+import com.gr00ze.training.item.ItemList;
 import com.gr00ze.training.model.DummyModel;
+import com.gr00ze.training.model.SwingingItemModel;
+import com.gr00ze.training.util.RegisterFunctions;
+import net.fabricmc.fabric.api.client.model.loading.v1.ModelLoadingPlugin;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
 
 import static com.gr00ze.training.render.DummyRenderer.DUMMY_LAYER;
@@ -28,7 +33,11 @@ public class RendererList {
         EntityRendererRegistry.register(EntityTypeList.DUMMY_SOUND_ENTITY,DummyRenderer::new);
         //A BLOCK ENTITY CAN HAVE ITS RENDERING
         BlockEntityRendererFactories.register(BlockList.CUSTOM_BLOCK_ENTITY, CustomBlockEntityRenderer::new);
+        //
 
+        WorldRenderEvents.AFTER_ENTITIES.register((context) -> {
+            //MyEffectRenderer.renderSwingCurve(context);
+        });
 
 
     }
