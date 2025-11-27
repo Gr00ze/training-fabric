@@ -2,18 +2,14 @@ package com.gr00ze.training.item;
 
 import com.gr00ze.training.screen.CustomScreenHandler;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.screen.NamedScreenHandlerFactory;
-import net.minecraft.screen.ScreenHandler;
-import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.screen.SimpleNamedScreenHandlerFactory;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.world.World;
 
-public class GuiItem extends TrainingCustomItem{
-    public GuiItem(Settings settings) {
+public class TrainingGuiItem extends TrainingCustomItem{
+    public TrainingGuiItem(Settings settings) {
         super(settings);
     }
 
