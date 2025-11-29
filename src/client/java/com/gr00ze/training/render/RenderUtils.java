@@ -1,5 +1,5 @@
 package com.gr00ze.training.render;
 
-public class RenderUtility {
+public class RenderUtils {
 
 }
