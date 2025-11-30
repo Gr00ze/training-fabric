@@ -1,56 +1,45 @@
 package com.gr00ze.training.render.item;
 
-import net.minecraft.client.render.RenderLayer;
-import net.minecraft.client.render.VertexConsumer;
+import com.gr00ze.training.item.TrainingCustomRenderItem;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.item.model.special.SpecialModelRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemDisplayContext;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.RotationAxis;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
+
+import static com.gr00ze.training.render.RenderUtils.addVertex;
+import static com.gr00ze.training.render.RenderExamples.drawDirectionalAxisCirclesExample;
 
 public class TrainingItemSpecialRenderer implements SpecialModelRenderer<TrainingModelRendererData> {
     public static final TrainingItemSpecialRenderer INSTANCE = new TrainingItemSpecialRenderer();
 
     @Override
-    public void render(@Nullable TrainingModelRendererData data, ItemDisplayContext displayContext, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay, boolean glint) {
+    public void render(
+            @Nullable TrainingModelRendererData data,
+            ItemDisplayContext displayContext,
+            MatrixStack matrices,
+            VertexConsumerProvider vertexConsumers,
+            int light,
+            int overlay,
+            boolean glint
+    ) {
         matrices.push();
-        matrices.translate(new Vec3d(0,2,0));
-        matrices.scale(20,20,20);
-        // esempio: un mini fulmine randomico davanti al modello dell’item
-        List<Vec3d> points = generateLightning(
-                new Vec3d(0,0,0),
-                new Vec3d(0,0,0.5),
-                8,
-                0.05
-        );
+        applyRotation(displayContext, matrices);
 
-        VertexConsumer vc = vertexConsumers.getBuffer(RenderLayer.getLines());
+        float radius = data.stack().getOrDefault(TrainingCustomRenderItem.RADIUS, 0.5f);
 
-        for (int i = 0; i < points.size()-1; i++) {
-            Vec3d p1 = points.get(i);
-            Vec3d p2 = points.get(i+1);
-
-            vc.vertex(matrices.peek(), (float)p1.x, (float)p1.y, (float)p1.z)
-                    .color(80, 150, 255, 255)
-                    .light(light)
-                    .normal(0,0,1);
-
-            vc.vertex(matrices.peek(), (float)p2.x, (float)p2.y, (float)p2.z)
-                    .color(80, 150, 255, 255)
-                    .light(light)
-                    .normal(0,0,1);
-        }
+        drawDirectionalAxisCirclesExample(vertexConsumers, matrices, radius,light);
 
         matrices.pop();
 
     }
+
+
 
     @Override
     public void collectVertices(Set<Vector3f> vertices) {
@@ -61,28 +50,36 @@ public class TrainingItemSpecialRenderer implements SpecialModelRenderer<Trainin
     public @Nullable TrainingModelRendererData getData(ItemStack stack) {
         return null;
     }
-    public static List<Vec3d> generateLightning(
-            Vec3d start, Vec3d end, int segments, double randomness) {
 
-        List<Vec3d> pts = new ArrayList<>();
-        pts.add(start);
 
-        for (int i = 1; i < segments; i++) {
-            double t = (double) i / segments;
-            Vec3d p = start.lerp(end, t);
+    private void applyRotation(ItemDisplayContext displayContext, MatrixStack matrices) {
 
-            // jitter casuale per effetto elettrico
-            p = p.add(
-                    (Math.random()-0.5)*randomness,
-                    (Math.random()-0.5)*randomness,
-                    (Math.random()-0.5)*randomness
-            );
+        switch (displayContext) {
+            case FIRST_PERSON_RIGHT_HAND -> {
+                matrices.translate(0.0, 1, 0.5);
+                matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(90));
+                matrices.scale(0.5f, 0.5f, 0.5f);
+            }
+            case FIRST_PERSON_LEFT_HAND -> {
+                matrices.translate(1, 1, 0.5);
+                matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(90));
+                matrices.scale(0.5f, 0.5f, 0.5f);
+            }
+            case THIRD_PERSON_RIGHT_HAND -> {
+                matrices.translate(0, 1, 0.5);
+            }
+            case THIRD_PERSON_LEFT_HAND -> {
+                matrices.translate(1, 1, 0.5);
+            }
 
-            pts.add(p);
+            default -> {
+                // Fallback: item nel mondo / GUI
+                matrices.translate(0, 0, 0);
+
+            }
+
         }
-
-        pts.add(end);
-        return pts;
     }
+
 
 }
