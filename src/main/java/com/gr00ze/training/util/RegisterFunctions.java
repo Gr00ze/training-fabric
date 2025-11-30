@@ -6,6 +6,7 @@ import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.component.ComponentType;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.mob.MobEntity;
@@ -203,5 +204,9 @@ public class RegisterFunctions {
 
     public static <S extends ScreenHandler> ScreenHandlerType<S> registerScreenType(String screenName, ScreenHandlerType.Factory<S> screenHandlerFactory, FeatureSet featureSet){
         return Registry.register(Registries.SCREEN_HANDLER,id(screenName), new ScreenHandlerType<>(screenHandlerFactory, featureSet));
+    }
+
+    public static <T> ComponentType<T> registerComponent(String componentName, ComponentType.Builder<T> builder){
+        return Registry.register(Registries.DATA_COMPONENT_TYPE, id(componentName), builder.build());
     }
 }
