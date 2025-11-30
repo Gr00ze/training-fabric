@@ -1,6 +1,7 @@
 package com.gr00ze.training.model.Item;
 
 import com.gr00ze.training.render.item.TrainingItemSpecialRenderer;
+import com.gr00ze.training.render.item.TrainingItemSpecialRenderer2;
 import com.gr00ze.training.render.item.TrainingModelRendererData;
 import net.minecraft.client.item.ItemModelManager;
 import net.minecraft.client.render.item.ItemRenderState;
@@ -30,6 +31,13 @@ public record CustomItemModel(ItemModel model) implements ItemModel {
 
         layerRenderState.setSpecialModel(
                 TrainingItemSpecialRenderer.INSTANCE,
+                new TrainingModelRendererData(stack, world, user)
+        );
+
+        ItemRenderState.LayerRenderState layerRenderState2 = state.newLayer();
+
+        layerRenderState2.setSpecialModel(
+                TrainingItemSpecialRenderer2.INSTANCE,
                 new TrainingModelRendererData(stack, world, user)
         );
     }
