@@ -15,7 +15,7 @@ public class ItemList{
 //CUSTOM ITEM WITH SCREEN BEHAVIOUR
  public static final Item CUSTOM_SCREEN_ITEM = registerItem("custom_screen_item", TrainingGuiItem::new ,TrainingCustomItem.getItemSetting());
 //CUSTOM ITEM WITH SCREEN BEHAVIOUR
- public static final Item CUSTOM_PARTICLE_ITEM = registerItem("custom_particle_item", TrainingParticlesItem::new ,TrainingCustomItem.getItemSetting());
+ public static final Item CUSTOM_RENDERING_ITEM = registerItem("custom_rendering_item", TrainingCustomRenderItem::new ,TrainingCustomItem.getItemSetting());
 
  //ITEM TO PLACE A BLOCK WITH SIMPLE SETTINGS
  public static final Item SIMPLE_BLOCK_ITEM = registerBlockItem( "simple_block_item",SIMPLE_BLOCK);

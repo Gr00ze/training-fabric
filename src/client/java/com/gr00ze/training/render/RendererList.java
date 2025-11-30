@@ -42,7 +42,7 @@ public class RendererList {
                 (model, ctx) -> {
                     //System.out.printf("Item ID %s%n", ctx.itemId().toString());
 
-                    if (!ctx.itemId().equals(id("custom_particle_item"))) {
+                    if (!ctx.itemId().equals(id("custom_rendering_item"))) {
                         return model; // restituisci il modello originale per tutti gli altri
                     }
                     System.out.printf("Called for %s%n", ctx.itemId().toString());
