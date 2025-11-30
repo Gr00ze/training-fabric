@@ -8,7 +8,7 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.Vec3d;
 import org.joml.Vector3f;
 
-import static com.gr00ze.training.render.BlockEntityRenderExamples.*;
+import static com.gr00ze.training.render.RenderExamples.*;
 import static com.gr00ze.training.util.RegisterFunctions.id;
 
 

@@ -20,17 +20,17 @@ import net.minecraft.util.math.Vec3d;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-import static com.gr00ze.training.Training.MOD_ID;
 import static com.gr00ze.training.util.RegisterFunctions.id;
 import static net.minecraft.client.gl.RenderPipelines.RENDERTYPE_END_PORTAL_SNIPPET;
 
-public class BlockEntityRenderExamples {
+public class RenderExamples {
     public static void exampleVertexCustomRenderLayer(Vector3f center, MatrixStack matrices, VertexConsumerProvider vertexConsumers) {
         // Render layer definition
         VertexConsumer consumer = vertexConsumers.getBuffer(RenderLayer.of(
@@ -395,7 +395,7 @@ public class BlockEntityRenderExamples {
 
     private static void addVertex(MatrixStack.Entry entry, VertexConsumer vertexConsumer, float[] pos, int light, int overlay, float nx, float ny, float nz, float u, float v) {
         vertexConsumer.vertex(entry.getPositionMatrix(), pos[0], pos[1], pos[2])
-                .color(255, 255, 255, 255)
+                .color(255, 255, 255, 200)
                 .texture(u, v)  // Corretto UV mapping
                 .overlay(overlay)
                 .light(light)
@@ -445,6 +445,90 @@ public class BlockEntityRenderExamples {
 
 
 
+    }
+
+    public static void drawDirectionalAxisCirclesExample(
+            VertexConsumerProvider vertexConsumers,
+            MatrixStack matrices,
+            float radius,
+            int light
+    ){
+        VertexConsumer vc = vertexConsumers.getBuffer(RenderLayer.getLines());
+
+
+        drawCircleOfLines(
+                vc,
+                matrices,
+                radius,      // raggio
+                320,        // numero segmenti
+                new Color(0,0,255,255),
+                light
+        );
+        matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(90));
+
+        drawCircleOfLines(
+                vc,
+                matrices,
+                radius,      // raggio
+                320,        // numero segmenti
+                new Color(255,0,0,255),
+                light
+        );
+        matrices.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(90));
+        drawCircleOfLines(
+                vc,
+                matrices,
+                radius,      // raggio
+                320,        // numero segmenti
+                new Color(0, 255, 0,255),
+                light
+        );
+    }
+
+    public static void drawCircleOfLines(
+            VertexConsumer vertexConsumer,
+            MatrixStack matrices,
+            float radius,
+            float segments,
+            Color color,
+            int light
+    ) {
+        double step = (Math.PI * 2) / segments;
+        for (int i = 0; i < segments; i++) {
+            double a1 = i * step;
+            double a2 = (i + 1) * step;
+
+            Vector3f p1 = new Vec3d(
+                    Math.cos(a1) * radius,
+                    0,
+                    Math.sin(a1) * radius
+            ).toVector3f();
+
+            Vector3f p2 = new Vec3d(
+                    Math.cos(a2) * radius,
+                    0,
+                    Math.sin(a2) * radius
+            ).toVector3f();
+
+            Vector3f normal = new Vector3f(1,1,1);
+            MatrixStack.Entry entry = matrices.peek();
+            drawLine(vertexConsumer, entry, p1, p2, color, light, normal);
+
+        }
+
+    }
+
+    private static void drawLine(VertexConsumer vertexConsumer, MatrixStack.Entry entry, Vector3f pos1, Vector3f pos2, Color color, int light, Vector3f normal) {
+        vertexConsumer
+                .vertex(entry, pos1)
+                .color(color.getRed(), color.getGreen(),color.getBlue(),color.getAlpha())
+                .light(light)
+                .normal(entry, normal);
+        vertexConsumer
+                .vertex(entry, pos2)
+                .color(color.getRed(), color.getGreen(),color.getBlue(),color.getAlpha())
+                .light(light)
+                .normal(entry, normal);
     }
 
 
