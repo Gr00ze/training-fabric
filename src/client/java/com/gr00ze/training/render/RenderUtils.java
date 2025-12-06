@@ -41,4 +41,20 @@ public class RenderUtils {
                 .light(light)
                 .normal(entry, nx, ny, nz);
     }
+
+    public static void drawFacesVertexColor(VertexConsumer consumer, MatrixStack.Entry e, Vector3f[] verts, int[][] faces, int argb) {
+        for (int[] face : faces) {
+            Vector3f[] quadVerts = new Vector3f[4];
+            for (int i = 0; i < 4; i++) {
+                quadVerts[i] = verts[face[i]];
+            }
+            drawQuadVertexColor(consumer, e, quadVerts, argb);
+        }
+    }
+
+    public static void drawQuadVertexColor(VertexConsumer consumer, MatrixStack.Entry e, Vector3f[] verts, int argb) {
+        for (Vector3f v : verts) {
+            consumer.vertex(e, v).color(argb);
+        }
+    }
 }
