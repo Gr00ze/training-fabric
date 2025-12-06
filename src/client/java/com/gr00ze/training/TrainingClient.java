@@ -1,5 +1,6 @@
 package com.gr00ze.training;
 
+import com.gr00ze.training.keybinding.KeyBindingList;
 import com.gr00ze.training.network.NetworkClient;
 import com.gr00ze.training.particle.ParticleRegistry;
 import com.gr00ze.training.render.RendererList;
@@ -15,5 +16,6 @@ public class TrainingClient implements ClientModInitializer {
         ParticleRegistry.registerParticles();
         ScreenInitializer.initialize();
         NetworkClient.initialize();
+        KeyBindingList.registerKeybindings();
 	}
 }
