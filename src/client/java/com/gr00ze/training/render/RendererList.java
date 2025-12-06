@@ -3,7 +3,7 @@ package com.gr00ze.training.render;
 import com.gr00ze.training.block.BlockList;
 import com.gr00ze.training.entity.EntityTypeList;
 import com.gr00ze.training.model.DummyModel;
-import com.gr00ze.training.model.Item.CustomItemModel;
+import com.gr00ze.training.model.Item.TrainingCustomItemModel;
 import net.fabricmc.fabric.api.client.model.loading.v1.ModelLoadingPlugin;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
@@ -46,7 +46,7 @@ public class RendererList {
                         return model; // restituisci il modello originale per tutti gli altri
                     }
                     System.out.printf("Called for %s%n", ctx.itemId().toString());
-                    return new CustomItemModel(model);
+                    return new TrainingCustomItemModel(model);
                 }
         ));
 
