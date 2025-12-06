@@ -6,52 +6,33 @@ import net.minecraft.client.gui.screen.ingame.ScreenHandlerProvider;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.toast.SystemToast;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.text.Text;
 
-public class TrainingScreen extends Screen implements ScreenHandlerProvider<CustomScreenHandler> {
-    Screen parent = null;
-    CustomScreenHandler customScreenHandler;
-    public TrainingScreen(Text title) {
-        super(title);
-    }
+public class TrainingScreen extends Screen {
 
-    public TrainingScreen(Text title, Screen parent) {
-        super(title);
-        this.parent = parent;
-    }
-
-    public TrainingScreen(CustomScreenHandler customScreenHandler, PlayerInventory stacks, Text text) {
-        super(text);
-        this.customScreenHandler = customScreenHandler;
-    }
-
-
-    @Override
-    protected void init() {
-        super.init();
-        addDrawable(ButtonWidget.builder(Text.of("Button Name"), (buttonWidget)->
-                this.client.getToastManager()
-                        .add(SystemToast.create(this.client, SystemToast.Type.PERIODIC_NOTIFICATION, Text.of("Template Mod"), Text.of("Example Description"))))
-                .dimensions(10,10,100,10).build());
-
+    protected TrainingScreen() {
+        super(Text.literal("Training Screen"));
     }
 
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
+        this.renderBackground(context); // sfondo semi-trasparente
+        context.fill(50, 50, 200, 150, 0x88000000); // rettangolo grigio
+        context.drawText(this.textRenderer, "Hello Screen!", 60, 60, 0xFFFFFFFF, false);
+
+        // Esempio: disegna un item
+        ItemStack stack = new ItemStack(Items.DIAMOND);
+        context.drawItem(stack, 70, 80);
+
         super.render(context, mouseX, mouseY, delta);
-        context.drawText(this.textRenderer, "Example text", 10, 10, 0XFF0000, true);
-
-    }
-
-    @Override
-    public void close() {
-        this.client.setScreen(parent);
     }
 
 
-    @Override
-    public CustomScreenHandler getScreenHandler() {
-        return customScreenHandler;
+    public void renderBackground(DrawContext context) {
+        context.fill(0, 0, this.width, this.height, 0xFF202020); // sfondo uniforme
     }
 }
+
