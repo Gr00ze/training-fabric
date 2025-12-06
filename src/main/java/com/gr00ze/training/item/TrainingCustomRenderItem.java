@@ -27,6 +27,20 @@ public class TrainingCustomRenderItem extends Item {
     }
 
     @Override
+    public void postProcessComponents(ItemStack itemStack) {
+        super.postProcessComponents(itemStack);
+
+    }
+
+    @Override
+    public ItemStack getDefaultStack() {
+        ItemStack itemStack = new ItemStack(this);
+        itemStack.set(RADIUS, 0F);
+        itemStack.set(ELECTRIC, false);
+        return itemStack;
+    }
+
+    @Override
     public ActionResult use(World world, PlayerEntity user, Hand hand) {
         ItemStack itemStack = user.getStackInHand(hand);
         if (itemStack.getItem() instanceof TrainingCustomRenderItem){
