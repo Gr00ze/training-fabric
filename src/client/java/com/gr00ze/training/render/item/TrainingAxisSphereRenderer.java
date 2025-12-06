@@ -15,8 +15,8 @@ import java.util.Set;
 import static com.gr00ze.training.render.RenderUtils.addVertex;
 import static com.gr00ze.training.render.RenderExamples.drawDirectionalAxisCirclesExample;
 
-public class TrainingItemSpecialRenderer implements SpecialModelRenderer<TrainingModelRendererData> {
-    public static final TrainingItemSpecialRenderer INSTANCE = new TrainingItemSpecialRenderer();
+public class TrainingAxisSphereRenderer implements SpecialModelRenderer<TrainingModelRendererData> {
+    public static final TrainingAxisSphereRenderer INSTANCE = new TrainingAxisSphereRenderer();
 
     @Override
     public void render(

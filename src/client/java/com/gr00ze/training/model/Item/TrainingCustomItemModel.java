@@ -1,7 +1,7 @@
 package com.gr00ze.training.model.Item;
 
-import com.gr00ze.training.render.item.TrainingItemSpecialRenderer;
-import com.gr00ze.training.render.item.TrainingItemSpecialRenderer2;
+import com.gr00ze.training.render.item.TrainingAxisSphereRenderer;
+import com.gr00ze.training.render.item.TrainingLightingRenderer;
 import com.gr00ze.training.render.item.TrainingModelRendererData;
 import net.minecraft.client.item.ItemModelManager;
 import net.minecraft.client.render.item.ItemRenderState;
@@ -12,7 +12,7 @@ import net.minecraft.item.ItemDisplayContext;
 import net.minecraft.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
-public record CustomItemModel(ItemModel model) implements ItemModel {
+public record TrainingCustomItemModel(ItemModel model) implements ItemModel {
 
     @Override
     public void update(
@@ -30,14 +30,14 @@ public record CustomItemModel(ItemModel model) implements ItemModel {
         ItemRenderState.LayerRenderState layerRenderState = state.newLayer();
 
         layerRenderState.setSpecialModel(
-                TrainingItemSpecialRenderer.INSTANCE,
+                TrainingAxisSphereRenderer.INSTANCE,
                 new TrainingModelRendererData(stack, world, user)
         );
 
         ItemRenderState.LayerRenderState layerRenderState2 = state.newLayer();
 
         layerRenderState2.setSpecialModel(
-                TrainingItemSpecialRenderer2.INSTANCE,
+                TrainingLightingRenderer.INSTANCE,
                 new TrainingModelRendererData(stack, world, user)
         );
     }
